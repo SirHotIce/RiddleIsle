@@ -8,6 +8,8 @@ namespace AI
 {
     public class OpenAIChatGPT : MonoBehaviour
     {
+        [SerializeField]
+        private TextAsset apiKeyFile;
         private string apiKey;
         private string apiURL = "https://api.openai.com/v1/chat/completions";
 
@@ -44,21 +46,20 @@ namespace AI
             public object logprobs; 
             public string finish_reason;
         }
-        void Start()
+         void Start()
         {
             LoadApiKey();
         }
 
         private void LoadApiKey()
         {
-            try
+            if (apiKeyFile != null)
             {
-                string filePath = Path.Combine(Application.dataPath, "Keys/key.txt");
-                apiKey = File.ReadAllText(filePath).Trim();
+                apiKey = apiKeyFile.text.Trim();
             }
-            catch (System.Exception e)
+            else
             {
-                Debug.LogError("Error reading the API key: " + e.Message);
+                Debug.LogError("API key file not assigned!");
             }
         }
 
